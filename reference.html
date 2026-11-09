@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101522">
+<title>C++ STL Reference — CppForge</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b0f18;--panel:#121a28;--line:#26344b;--muted:#91a0b8;--text:#e9effa;--blue:#70a5ff;--green:#61d6a5}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0,#1d3154 0,transparent 42%),var(--bg);color:var(--text);font-family:Manrope,sans-serif}header{padding:20px 5vw;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:800}.brand span{color:var(--blue)}a{color:var(--blue);text-decoration:none}main{max-width:1100px;margin:auto;padding:34px 5vw 60px}h1{font-size:34px;margin:5px 0}.muted{color:var(--muted);font-size:13px}.group{margin-top:28px}.group h2{font-size:19px;margin-bottom:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px}.card h3{font-size:14px;color:var(--green);margin:0 0 10px}.item{padding:7px 0;border-top:1px solid #202c40;font-size:12px;line-height:1.6}.item:first-of-type{border-top:0}.item code{font:11px 'DM Mono',monospace;color:#c7dcff;overflow-wrap:anywhere}.item p{margin:2px 0 0;color:var(--muted)}.pill{display:inline-block;background:#1b2a40;border:1px solid #2a3c58;border-radius:6px;padding:3px 7px;margin:3px;font:11px 'DM Mono',monospace;color:#c7dcff}
+</style>
+</head>
+<body>
+<header><div class="brand">Cpp<span>Forge</span> / STL reference</div><a href="./index.html">← Back to compiler</a></header>
+<main><div class="muted">QUICK REFERENCE · C++11–20 (availability depends on compiler version)</div><h1>Common C++ functions & STL</h1><p class="muted">A practical reminder of frequently used standard-library algorithms, containers, and string utilities. Include the appropriate header, or use <code>&lt;bits/stdc++.h&gt;</code> in GCC-based competitive programming environments.</p>
+<section class="group"><h2>Algorithms — &lt;algorithm&gt;</h2><div class="grid">
+<div class="card"><h3>Sorting & rearranging</h3>
+<div class="item"><code>sort(v.begin(), v.end())</code><p>Sort ascending; add <code>greater&lt;int&gt;()</code> for descending.</p></div>
+<div class="item"><code>stable_sort(v.begin(), v.end())</code><p>Sort while preserving the order of equivalent elements.</p></div>
+<div class="item"><code>reverse(v.begin(), v.end())</code><p>Reverse a range.</p></div>
+<div class="item"><code>rotate(v.begin(), v.begin()+k, v.end())</code><p>Rotate a range.</p></div>
+<div class="item"><code>next_permutation(v.begin(), v.end())</code><p>Generate the next lexicographical permutation.</p></div>
+<div class="item"><code>prev_permutation(v.begin(), v.end())</code><p>Generate the previous permutation.</p></div></div>
+<div class="card"><h3>Searching & checking</h3>
+<div class="item"><code>find(first, last, x)</code><p>Return iterator to first matching value, or last.</p></div>
+<div class="item"><code>binary_search(first, last, x)</code><p>Check whether x exists in a sorted range.</p></div>
+<div class="item"><code>lower_bound(first, last, x)</code><p>First position with value ≥ x (sorted range).</p></div>
+<div class="item"><code>upper_bound(first, last, x)</code><p>First position with value &gt; x (sorted range).</p></div>
+<div class="item"><code>count(first, last, x)</code><p>Count occurrences.</p></div>
+<div class="item"><code>all_of / any_of / none_of(first,last,pred)</code><p>Test a predicate across a range.</p></div></div>
+<div class="card"><h3>Min, max & partition</h3>
+<div class="item"><code>min(a, b), max(a, b)</code><p>Smaller or larger of two values.</p></div>
+<div class="item"><code>min_element(first, last)</code><p>Iterator to the minimum element.</p></div>
+<div class="item"><code>max_element(first, last)</code><p>Iterator to the maximum element.</p></div>
+<div class="item"><code>minmax_element(first, last)</code><p>Pair of iterators to min and max.</p></div>
+<div class="item"><code>unique(first, last)</code><p>Move consecutive duplicates to the end; usually combine with erase.</p></div>
+<div class="item"><code>partition(first, last, pred)</code><p>Group elements by a predicate.</p></div></div>
+<div class="card"><h3>Other useful algorithms</h3>
+<div class="item"><code>fill(first, last, value)</code><p>Fill a range with one value.</p></div>
+<div class="item"><code> iota(first, last, start)</code><p>Fill with increasing values (header &lt;numeric&gt;).</p></div>
+<div class="item"><code>copy / copy_if / transform</code><p>Copy or transform elements into another range.</p></div>
+<div class="item"><code>remove(first, last, x)</code><p>Remove-value idiom; combine with erase.</p></div>
+<div class="item"><code>nth_element(first, nth, last)</code><p>Place the element that would be at nth in sorted order.</p></div>
+<div class="item"><code>clamp(x, low, high)</code><p>Restrict a value to an interval (C++17).</p></div></div>
+</div></section>
+<section class="group"><h2>Numeric — &lt;numeric&gt; and &lt;cmath&gt;</h2><div class="grid">
+<div class="card"><h3>Numeric algorithms</h3><div class="item"><code>accumulate(first,last,0LL)</code><p>Sum values; use 0LL to accumulate in long long.</p></div><div class="item"><code>partial_sum(first,last,out)</code><p>Build prefix sums into an output range.</p></div><div class="item"><code>adjacent_difference(first,last,out)</code><p>Differences between adjacent values.</p></div><div class="item"><code>gcd(a,b), lcm(a,b)</code><p>Greatest common divisor / least common multiple (C++17).</p></div><div class="item"><code>iota(first,last,0)</code><p>Fill sequential values.</p></div></div>
+<div class="card"><h3>Math functions</h3><div class="item"><code>abs(x), llabs(x)</code><p>Absolute value.</p></div><div class="item"><code>sqrt(x), cbrt(x)</code><p>Square root / cube root.</p></div><div class="item"><code>pow(a,b)</code><p>Power; returns floating-point.</p></div><div class="item"><code>ceil(x), floor(x), round(x)</code><p>Rounding operations.</p></div><div class="item"><code>log(x), log2(x), log10(x)</code><p>Logarithms.</p></div></div>
+</div></section>
+<section class="group"><h2>Strings — &lt;string&gt;</h2><div class="grid">
+<div class="card"><h3>Read & modify</h3><div class="item"><code>s.size(), s.length(), s.empty()</code><p>Length and emptiness.</p></div><div class="item"><code>s.substr(pos, len)</code><p>Extract substring.</p></div><div class="item"><code>s.find(t), s.rfind(t)</code><p>Find first / last occurrence; compare with string::npos.</p></div><div class="item"><code>s.erase(pos, len), s.insert(pos, t)</code><p>Erase or insert characters.</p></div><div class="item"><code>s.push_back(c), s.pop_back()</code><p>Add or remove final character.</p></div><div class="item"><code>s += t, s.append(t)</code><p>Append text.</p></div></div>
+<div class="card"><h3>Character & conversion</h3><div class="item"><code>tolower(c), toupper(c)</code><p>Convert a character; cast through unsigned char for arbitrary byte values.</p></div><div class="item"><code>isalpha(c), isdigit(c), isalnum(c)</code><p>Character classification.</p></div><div class="item"><code>isspace(c), islower(c), isupper(c)</code><p>Whitespace / letter checks.</p></div><div class="item"><code>stoi(s), stoll(s), stod(s)</code><p>Convert string to number.</p></div><div class="item"><code>to_string(x)</code><p>Convert number to string.</p></div><div class="item"><code>stringstream ss(s)</code><p>Parse formatted data from a string (&lt;sstream&gt;).</p></div></div>
+</div></section>
+<section class="group"><h2>Containers — common operations</h2><div class="grid">
+<div class="card"><h3>Sequence containers</h3><div class="item"><code>vector&lt;T&gt; v</code><p>push_back, emplace_back, pop_back, front, back, at, [], size, empty, clear, resize, reserve, begin, end.</p></div><div class="item"><code>array&lt;T,N&gt; a</code><p>Fixed-size array; size, fill, front, back, at, [], begin, end.</p></div><div class="item"><code>deque&lt;T&gt; d</code><p>push_front, push_back, pop_front, pop_back, front, back, [], size.</p></div><div class="item"><code>list&lt;T&gt; l</code><p>push_front/back, pop_front/back, insert, erase, remove, sort, reverse, splice.</p></div><div class="item"><code>string s</code><p>Character sequence with string-specific operations above.</p></div></div>
+<div class="card"><h3>Adapters</h3><div class="item"><code>stack&lt;T&gt; st</code><p>push, emplace, pop, top, size, empty.</p></div><div class="item"><code>queue&lt;T&gt; q</code><p>push, emplace, pop, front, back, size, empty.</p></div><div class="item"><code>priority_queue&lt;T&gt; pq</code><p>push, emplace, pop, top, size, empty. Default is max-heap.</p></div><div class="item"><code>priority_queue&lt;T, vector&lt;T&gt;, greater&lt;T&gt;&gt; pq</code><p>Min-heap.</p></div></div>
+<div class="card"><h3>Ordered associative</h3><div class="item"><code>set&lt;T&gt; / multiset&lt;T&gt;</code><p>insert, emplace, erase, find, count, lower_bound, upper_bound, size, empty. Sorted keys; set unique, multiset allows duplicates.</p></div><div class="item"><code>map&lt;K,V&gt; / multimap&lt;K,V&gt;</code><p>[], at (map), insert, emplace, erase, find, count, lower_bound, upper_bound. Sorted keys; multimap allows duplicate keys.</p></div></div>
+<div class="card"><h3>Unordered associative</h3><div class="item"><code>unordered_set / unordered_multiset</code><p>insert, emplace, erase, find, count, reserve, rehash, size. Average O(1); no sorted order.</p></div><div class="item"><code>unordered_map / unordered_multimap</code><p>[], at (unordered_map), insert, emplace, erase, find, count, reserve, rehash. Average O(1); multimap allows duplicate keys.</p></div></div>
+</div></section>
+<section class="group"><h2>Utilities & common patterns</h2><div class="grid">
+<div class="card"><h3>Pairs, tuples & bits</h3><div class="item"><code>pair&lt;A,B&gt; p; make_pair(a,b)</code><p>Access p.first and p.second.</p></div><div class="item"><code>tuple&lt;A,B,C&gt; t</code><p>make_tuple, get&lt;0&gt;(t), tie(a,b,c).</p></div><div class="item"><code>bitset&lt;N&gt; b</code><p>count, test, set, reset, flip, any, none, all.</p></div><div class="item"><code>__builtin_popcount(x)</code><p>Count set bits in unsigned int; use __builtin_popcountll for unsigned long long (GCC/Clang).</p></div><div class="item"><code>numeric_limits&lt;T&gt;::max()</code><p>Largest representable value of type T.</p></div></div>
+<div class="card"><h3>Iterators & lambdas</h3><div class="item"><code>begin(c), end(c), rbegin(c), rend(c)</code><p>Forward and reverse iterators.</p></div><div class="item"><code>distance(first,last)</code><p>Distance between iterators.</p></div><div class="item"><code>next(it), prev(it)</code><p>Move an iterator forward / backward.</p></div><div class="item"><code>auto cmp = [](int a,int b){ return a&gt;b; };</code><p>Lambda comparator example for descending order.</p></div><div class="item"><code>sort(v.begin(),v.end(),cmp)</code><p>Sort with a custom comparator.</p></div></div>
+</div></section>
+<p class="muted" style="margin-top:32px">Tip: know the complexity and iterator requirements of each operation. For example, lower_bound on a vector is O(log n), while calling it on a set is unnecessary because set already provides its own lower_bound member function.</p>
+</main></body></html>
