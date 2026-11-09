@@ -5,7 +5,7 @@ A lightweight browser-based C++ playground for learning and competitive programm
 ## Features
 - C++ editor with syntax highlighting, line numbers, bracket matching, and indentation (CodeMirror 5).
 - Run C++ code remotely using GCC through the Piston API.
-- Select C++11, C++14, C++17, or C++20 mode.
+- Uses the GCC 10.2.0 runtime provided by Piston.
 - Custom standard input and separate output / compiler diagnostics.
 - Quick snippets for common algorithms and STL patterns.
 - STL pocket reference for commonly used containers and functions.
