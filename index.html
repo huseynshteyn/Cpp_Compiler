@@ -33,7 +33,7 @@
   <div class="workspace">
     <div class="maincol">
       <section class="panel">
-        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><select class="select" id="standard" aria-label="C++ standard"><option value="c++20">C++20</option><option value="c++17">C++17</option><option value="c++14">C++14</option><option value="c++11">C++11</option></select><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
+        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC 10.2.0</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
         <div class="editor-wrap"><textarea id="code">#include <bits/stdc++.h>
 using namespace std;
 
@@ -59,7 +59,7 @@ int main() {
         <button class="snippet" data-code="int sum = accumulate(a.begin(), a.end(), 0LL);">accumulate <span>numeric</span></button>
         <button class="snippet" data-code="int g = gcd(a, b);">gcd <span>numeric</span></button>
         <button class="snippet" data-code="do { /* process permutation */ } while (next_permutation(a.begin(), a.end()));">next_permutation <span>algorithm</span></button>
-        <button class="snippet" data-code="sort(a.begin(), a.end());\na.erase(unique(a.begin(), a.end()), a.end());">unique + erase <span>vector</span></button>
+        <button class="snippet" data-code="sort(a.begin(), a.end());&#10;a.erase(unique(a.begin(), a.end()), a.end());">unique + erase <span>vector</span></button>
         <button class="snippet" data-code="for (auto &x : a) {\n    // use x\n}">range-based for <span>loop</span></button>
         <button class="snippet" data-code="priority_queue<int, vector<int>, greater<int>> pq;">min priority_queue <span>STL</span></button>
       </div></section>
