@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101522">
+  <title>CppForge — Online C++ Compiler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+  <style>
+    :root{color-scheme:dark;--bg:#0b0f18;--panel:#121a28;--panel2:#182235;--line:#26344b;--muted:#91a0b8;--text:#e9effa;--blue:#70a5ff;--green:#61d6a5;--red:#ff7d88}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -20%,#1d3154 0,transparent 45%),var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;min-height:100vh}
+    header{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:#0b0f18d9;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;letter-spacing:-.5px}.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#7bb2ff,#7068ed);display:grid;place-items:center;color:#08111f;font:800 16px 'DM Mono',monospace}.brand span{color:var(--blue)}.topnote{color:var(--muted);font-size:12px}
+    main{max-width:1500px;margin:0 auto;padding:28px 4vw 48px}.intro{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px;gap:20px}.eyebrow{color:var(--green);font:500 11px 'DM Mono',monospace;letter-spacing:2px;text-transform:uppercase}.intro h1{font-size:clamp(25px,3vw,38px);margin:7px 0 5px;letter-spacing:-1.5px}.intro p{margin:0;color:var(--muted);font-size:13px}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;align-items:start}.maincol{min-width:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 16px 45px #0002}.toolbar{height:54px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:10px}.filetag{display:flex;align-items:center;gap:9px;font:12px 'DM Mono',monospace;color:#d8e3f6}.dot{width:8px;height:8px;border-radius:50%;background:#72a5ff}.controls{display:flex;align-items:center;gap:8px}.select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;font:12px Manrope,sans-serif}
+    button{cursor:pointer;border:0;font:700 12px Manrope,sans-serif;border-radius:8px;padding:9px 14px;transition:.15s}button:disabled{opacity:.55;cursor:wait}.run{background:var(--green);color:#062116}.run:hover{filter:brightness(1.08);transform:translateY(-1px)}.soft{background:var(--panel2);color:#c8d5e9;border:1px solid var(--line)}.soft:hover{border-color:#6486ba}
+    .editor-wrap{height:510px}.CodeMirror{height:100%;font:13px/1.7 'DM Mono',monospace;background:#0e1521}.CodeMirror-gutters{background:#0e1521;border-right:1px solid #202c40}.CodeMirror-linenumber{color:#586982}
+    .bottomgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}.subpanel{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}.subhead{height:45px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700}.subhead small{color:var(--muted);font:10px 'DM Mono',monospace}.subpanel textarea{width:100%;height:135px;resize:vertical;background:#0e1521;color:#dce7f8;border:0;outline:0;padding:13px;font:12px/1.6 'DM Mono',monospace}
+    #output{height:135px;overflow:auto;white-space:pre-wrap;padding:13px;color:#c6d6ec;font:12px/1.6 'DM Mono',monospace}.status{color:var(--muted);font:10px 'DM Mono',monospace}.status.ok{color:var(--green)}.status.err{color:var(--red)}
+    aside{display:flex;flex-direction:column;gap:14px}.sidebox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}.sidebox h3{font-size:13px;margin:0 0 12px}.sidebox p{color:var(--muted);font-size:11px;line-height:1.6;margin:0 0 10px}.snippets{display:grid;gap:6px}.snippet{display:flex;justify-content:space-between;align-items:center;text-align:left;width:100%;background:#182235;border:1px solid #26344b;color:#d7e4f7;padding:9px 10px;border-radius:8px;font:11px 'DM Mono',monospace}.snippet:hover{border-color:var(--blue)}.snippet span{color:#8295b4;font-size:10px}
+    .refgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.refitem{padding:8px;background:#182235;border-radius:7px;color:#cbd9ed;font:10px 'DM Mono',monospace}.refitem b{display:block;color:var(--blue);font-weight:500;margin-bottom:3px}.foot{color:#71819b;text-align:center;font-size:10px;margin-top:22px}
+    @media(max-width:950px){.workspace{grid-template-columns:1fr}aside{display:grid;grid-template-columns:1fr 1fr}.editor-wrap{height:440px}}@media(max-width:620px){header{padding:0 16px}.topnote{display:none}main{padding:20px 13px}.intro{align-items:start;flex-direction:column}.toolbar{padding:0 9px}.select{padding:7px}.controls{gap:5px}.run,.soft{padding:8px 9px}.bottomgrid,aside{grid-template-columns:1fr}.editor-wrap{height:390px}}
+  </style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">&lt;/&gt;</div>Cpp<span>Forge</span></div><div class="topnote">A clean workspace for competitive programming</div></header>
+<main>
+  <section class="intro"><div><div class="eyebrow">C++ playground</div><h1>Write. Compile. Run.</h1><p>A browser-based C++ editor powered by a remote compiler. No setup required.</p></div></section>
+  <div class="workspace">
+    <div class="maincol">
+      <section class="panel">
+        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><select class="select" id="standard" aria-label="C++ standard"><option value="c++20">C++20</option><option value="c++17">C++17</option><option value="c++14">C++14</option><option value="c++11">C++11</option></select><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
+        <div class="editor-wrap"><textarea id="code">#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cout << "Hello, C++!" << '\\n';
+    return 0;
+}</textarea></div>
+      </section>
+      <div class="bottomgrid">
+        <section class="subpanel"><div class="subhead">Standard input <small>stdin</small></div><textarea id="stdin" spellcheck="false" placeholder="Type input for your program here..."></textarea></section>
+        <section class="subpanel"><div class="subhead">Output <span class="status" id="status">Ready</span></div><div id="output">Your program output will appear here.</div></section>
+      </div>
+    </div>
+    <aside>
+      <section class="sidebox"><h3>⚡ Quick snippets</h3><p>Click a snippet to insert a commonly used C++ pattern at your cursor.</p><div class="snippets" id="snippets">
+        <button class="snippet" data-code="sort(a.begin(), a.end());">sort <span>algorithm</span></button>
+        <button class="snippet" data-code="reverse(a.begin(), a.end());">reverse <span>algorithm</span></button>
+        <button class="snippet" data-code="auto it = lower_bound(a.begin(), a.end(), x);">lower_bound <span>binary search</span></button>
+        <button class="snippet" data-code="auto it = upper_bound(a.begin(), a.end(), x);">upper_bound <span>binary search</span></button>
+        <button class="snippet" data-code="int sum = accumulate(a.begin(), a.end(), 0LL);">accumulate <span>numeric</span></button>
+        <button class="snippet" data-code="int g = gcd(a, b);">gcd <span>numeric</span></button>
+        <button class="snippet" data-code="do { /* process permutation */ } while (next_permutation(a.begin(), a.end()));">next_permutation <span>algorithm</span></button>
+        <button class="snippet" data-code="sort(a.begin(), a.end());\na.erase(unique(a.begin(), a.end()), a.end());">unique + erase <span>vector</span></button>
+        <button class="snippet" data-code="for (auto &x : a) {\n    // use x\n}">range-based for <span>loop</span></button>
+        <button class="snippet" data-code="priority_queue<int, vector<int>, greater<int>> pq;">min priority_queue <span>STL</span></button>
+      </div></section>
+      <section class="sidebox"><h3>STL pocket reference</h3><div class="refgrid">
+        <div class="refitem"><b>vector</b>push_back, pop_back, size</div><div class="refitem"><b>string</b>substr, find, stoi</div>
+        <div class="refitem"><b>set</b>insert, erase, count</div><div class="refitem"><b>map</b>[], find, count</div>
+        <div class="refitem"><b>stack</b>push, pop, top</div><div class="refitem"><b>queue</b>push, pop, front</div>
+        <div class="refitem"><b>deque</b>push_front, back</div><div class="refitem"><b>heap</b>push_heap, pop_heap</div>
+        <div class="refitem"><b>algorithm</b>sort, min, max</div><div class="refitem"><b>numeric</b>gcd, lcm, iota</div>
+      </div></section>
+      <section class="sidebox"><h3>Compiler notes</h3><p>Compiler: GCC via the Piston execution API.</p><p>Supports standard input, compiler diagnostics, and program output. Code is sent to the remote service only when you press Run.</p><p>Do not paste passwords, API keys, or other secrets into this public playground.</p></section>
+    </aside>
+  </div>
+  <div class="foot">CppForge · Built for learning and problem solving · Your code stays in this browser until you run it.</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script>
+const starter = document.getElementById('code').value;
+const editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode:'text/x-c++src',theme:'material-darker',lineNumbers:true,indentUnit:4,tabSize:4,matchBrackets:true,autocorrect:false,extraKeys:{'Tab':cm=>cm.replaceSelection('    ') }});
+const output = document.getElementById('output');
+const status = document.getElementById('status');
+const runButton = document.getElementById('run');
+document.getElementById('reset').addEventListener('click',()=>{editor.setValue(starter);document.getElementById('stdin').value='';output.textContent='Your program output will appear here.';status.textContent='Ready';status.className='status';});
+document.getElementById('snippets').addEventListener('click',e=>{const b=e.target.closest('button[data-code]');if(!b)return;editor.replaceSelection(b.dataset.code);editor.focus();});
+runButton.addEventListener('click',async()=>{
+  runButton.disabled=true;runButton.textContent='Compiling…';status.textContent='Running';status.className='status';output.textContent='Sending code to compiler…';
+  try{
+    const response=await fetch('https://emkc.org/api/v2/piston/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'c++',version:'10.2.0',files:[{name:'main.cpp',content:editor.getValue()}],stdin:document.getElementById('stdin').value,args:[],compile_timeout:10000,run_timeout:3000})});
+    if(!response.ok)throw new Error('Compiler service returned HTTP '+response.status);
+    const data=await response.json();
+    const compile=(data.compile&&data.compile.output)||'';
+    const run=(data.run&&data.run.output)||'';
+    const pieces=[];if(compile)pieces.push('COMPILER\n'+compile);if(run)pieces.push('PROGRAM\n'+run);
+    output.textContent=pieces.join('\n\n')||'(Program finished with no output.)';
+    const failed=(data.compile&&data.compile.code!==0)||(data.run&&data.run.code!==0);
+    status.textContent=failed?'Finished with errors':'Success';status.className='status '+(failed?'err':'ok');
+  }catch(err){output.textContent='Could not reach the compiler.\n'+err.message+'\n\nCheck your internet connection or try again later.';status.textContent='Connection error';status.className='status err';}
+  finally{runButton.disabled=false;runButton.textContent='▶ Run code';}
+});
+</script>
+</body>
+</html>
