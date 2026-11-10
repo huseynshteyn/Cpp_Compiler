@@ -33,7 +33,7 @@
   <div class="workspace">
     <div class="maincol">
       <section class="panel">
-        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC · Wandbox</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
+        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC 13.2 · Wandbox</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
         <div class="editor-wrap"><textarea id="code">#include <bits/stdc++.h>
 using namespace std;
 
@@ -88,7 +88,7 @@ document.getElementById('snippets').addEventListener('click',e=>{const b=e.targe
 runButton.addEventListener('click',async()=>{
   runButton.disabled=true;runButton.textContent='Compiling…';status.textContent='Running';status.className='status';output.textContent='Sending code to compiler…';
   try{
-    const response=await fetch('https://wandbox.org/api/compile.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compiler:'gcc-head',code:editor.getValue(),stdin:document.getElementById('stdin').value,options:'warning,gnu++17'})});
+    const response=await fetch('https://wandbox.org/api/compile.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compiler:'gcc-13.2.0',code:editor.getValue(),stdin:document.getElementById('stdin').value,options:'warning,gnu++17'})});
     if(!response.ok){
       const detail=await response.text();
       throw new Error('Compiler service returned HTTP '+response.status+(detail?' — '+detail.slice(0,300):''));
