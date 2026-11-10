@@ -33,7 +33,7 @@
   <div class="workspace">
     <div class="maincol">
       <section class="panel">
-        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC 13.2 · Wandbox</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
+        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC 13.2 · Wandbox</span><button class="soft" id="saveTemplate">Save template</button><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
         <div class="editor-wrap"><textarea id="code">#include <bits/stdc++.h>
 using namespace std;
 
@@ -77,13 +77,51 @@ int main() {
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 <script>
 const starter = document.getElementById('code').value;
-const editor = CodeMirror.fromTextArea(document.getElementById('code'), {mode:'text/x-c++src',theme:'material-darker',lineNumbers:true,indentUnit:4,tabSize:4,matchBrackets:true,autocorrect:false,extraKeys:{'Tab':cm=>cm.replaceSelection('    ') }});
+const TEMPLATE_KEY = 'cppforge-starting-template';
+let savedTemplate = starter;
+try {
+  const storedTemplate = localStorage.getItem(TEMPLATE_KEY);
+  if (storedTemplate !== null) savedTemplate = storedTemplate;
+} catch (error) {
+  console.warn('Could not read the saved template:', error);
+}
+document.getElementById('code').value = savedTemplate;
+const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+  mode:'text/x-c++src',
+  theme:'material-darker',
+  lineNumbers:true,
+  indentUnit:4,
+  tabSize:4,
+  matchBrackets:true,
+  autoCloseBrackets:{pairs:"()[]{}<>''\"\""},
+  autocorrect:false,
+  extraKeys:{'Tab':cm=>cm.replaceSelection('    ')}
+});
 const output = document.getElementById('output');
 const status = document.getElementById('status');
 const runButton = document.getElementById('run');
-document.getElementById('reset').addEventListener('click',()=>{editor.setValue(starter);document.getElementById('stdin').value='';output.textContent='Your program output will appear here.';status.textContent='Ready';status.className='status';});
+document.getElementById('saveTemplate').addEventListener('click',()=>{
+  try {
+    savedTemplate = editor.getValue();
+    localStorage.setItem(TEMPLATE_KEY, savedTemplate);
+    status.textContent = 'Template saved';
+    status.className = 'status ok';
+  } catch (error) {
+    status.textContent = 'Could not save template';
+    status.className = 'status err';
+    output.textContent = 'Your browser could not save the template. Check its site storage settings.';
+  }
+});
+document.getElementById('reset').addEventListener('click',()=>{
+  editor.setValue(savedTemplate);
+  document.getElementById('stdin').value='';
+  output.textContent='Your saved starting template has been restored.';
+  status.textContent='Template loaded';
+  status.className='status ok';
+});
 document.getElementById('snippets').addEventListener('click',e=>{const b=e.target.closest('button[data-code]');if(!b)return;editor.replaceSelection(b.dataset.code);editor.focus();});
 runButton.addEventListener('click',async()=>{
   runButton.disabled=true;runButton.textContent='Compiling…';status.textContent='Running';status.className='status';output.textContent='Sending code to compiler…';
