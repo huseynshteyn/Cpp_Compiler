@@ -33,7 +33,7 @@
   <div class="workspace">
     <div class="maincol">
       <section class="panel">
-        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC 10.2.0</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
+        <div class="toolbar"><div class="filetag"><span class="dot"></span> main.cpp <span style="color:#73839d">·</span> <span style="color:#8da4c7">C++</span></div><div class="controls"><span class="select" style="cursor:default">GCC · Wandbox</span><button class="soft" id="reset">Reset</button><button class="run" id="run">▶ Run code</button></div></div>
         <div class="editor-wrap"><textarea id="code">#include <bits/stdc++.h>
 using namespace std;
 
@@ -70,7 +70,7 @@ int main() {
         <div class="refitem"><b>deque</b>push_front, back</div><div class="refitem"><b>heap</b>push_heap, pop_heap</div>
         <div class="refitem"><b>algorithm</b>sort, min, max</div><div class="refitem"><b>numeric</b>gcd, lcm, iota</div>
       </div></section>
-      <section class="sidebox"><h3>Compiler notes</h3><p>Compiler: GCC via the Piston execution API.</p><p>Supports standard input, compiler diagnostics, and program output. Code is sent to the remote service only when you press Run.</p><p>Do not paste passwords, API keys, or other secrets into this public playground.</p></section>
+      <section class="sidebox"><h3>Compiler notes</h3><p>Compiler: GCC via the Wandbox API.</p><p>Supports standard input, compiler diagnostics, and program output. Code is sent to the remote service only when you press Run.</p><p>Do not paste passwords, API keys, or other secrets into this public playground.</p></section>
     </aside>
   </div>
   <div class="foot">CppForge · Built for learning and problem solving · Your code stays in this browser until you run it.</div>
@@ -88,14 +88,17 @@ document.getElementById('snippets').addEventListener('click',e=>{const b=e.targe
 runButton.addEventListener('click',async()=>{
   runButton.disabled=true;runButton.textContent='Compiling…';status.textContent='Running';status.className='status';output.textContent='Sending code to compiler…';
   try{
-    const response=await fetch('https://emkc.org/api/v2/piston/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:'c++',version:'10.2.0',files:[{name:'main.cpp',content:editor.getValue()}],stdin:document.getElementById('stdin').value,args:[],compile_timeout:10000,run_timeout:3000})});
-    if(!response.ok)throw new Error('Compiler service returned HTTP '+response.status);
+    const response=await fetch('https://wandbox.org/api/compile.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({compiler:'gcc-head',code:editor.getValue(),stdin:document.getElementById('stdin').value,options:'warning,gnu++17'})});
+    if(!response.ok){
+      const detail=await response.text();
+      throw new Error('Compiler service returned HTTP '+response.status+(detail?' — '+detail.slice(0,300):''));
+    }
     const data=await response.json();
-    const compile=(data.compile&&data.compile.output)||'';
-    const run=(data.run&&data.run.output)||'';
+    const compile=data.compiler_message||[data.compiler_output,data.compiler_error].filter(Boolean).join('\n');
+    const run=data.program_message||[data.program_output,data.program_error].filter(Boolean).join('\n');
     const pieces=[];if(compile)pieces.push('COMPILER\n'+compile);if(run)pieces.push('PROGRAM\n'+run);
     output.textContent=pieces.join('\n\n')||'(Program finished with no output.)';
-    const failed=(data.compile&&data.compile.code!==0)||(data.run&&data.run.code!==0);
+    const failed=Number(data.status)!==0||!!data.signal;
     status.textContent=failed?'Finished with errors':'Success';status.className='status '+(failed?'err':'ok');
   }catch(err){output.textContent='Could not reach the compiler.\n'+err.message+'\n\nCheck your internet connection or try again later.';status.textContent='Connection error';status.className='status err';}
   finally{runButton.disabled=false;runButton.textContent='▶ Run code';}
